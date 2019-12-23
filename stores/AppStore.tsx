@@ -9,7 +9,8 @@ export type TConfig = {
   companyName: string
   companyUrl: string
   footerMessage?: string
-  apiUrl: string | undefined
+  apiUrl?: string
+  allowNewUsers?: boolean
 }
 
 export default class AppStore {
@@ -37,7 +38,7 @@ export default class AppStore {
 
   @action
   setConfig(config: TConfig) {
-    this.config = config
+    this.config = Object.assign({ allowNewUsers: true }, config)
     this.configResolved = true
   }
 

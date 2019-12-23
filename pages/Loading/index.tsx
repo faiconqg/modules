@@ -5,7 +5,7 @@ import {
   Container,
   Typography
 } from '@material-ui/core'
-import { useStores } from 'modules/stores/use-stores'
+import { useModuleStores } from 'modules/stores/use-module-stores'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Loading: FC = () => {
-  const { appStore } = useStores()
+  const { appStore } = useModuleStores()
   const classes = useStyles()
 
   return (

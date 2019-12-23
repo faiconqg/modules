@@ -6,7 +6,7 @@ import validatorjs from 'validatorjs'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core'
 import Error from '@material-ui/icons/Error'
-import cs from 'classnames'
+import clsx from 'clsx'
 
 validatorjs.useLang('pt_BR')
 
@@ -29,7 +29,7 @@ const Main = ({ fields, onSubmit, onError, render, error, className }) => {
   const classes = useStyles()
 
   return (
-    <form className={cs(classes.form, className)} noValidate>
+    <form className={clsx(classes.form, className)} noValidate>
       {error && (
         <div className={classes.error}>
           <Error className={classes.iconError} />

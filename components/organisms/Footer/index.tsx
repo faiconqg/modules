@@ -1,10 +1,9 @@
-import React, { FC } from 'react'
+import React from 'react'
 import Container from '@material-ui/core/Container'
 import Link from '@material-ui/core/Link'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { observer } from 'mobx-react-lite'
-import { useStores } from 'modules/stores/use-stores'
+import { useModuleStores } from 'modules/stores/use-module-stores'
 
 const useStyles = makeStyles(theme => ({
   footer: {
@@ -17,24 +16,26 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Footer: FC = () => {
+const Footer: React.FC = () => {
   const classes = useStyles()
-  const { appStore } = useStores()
+  const { appStore } = useModuleStores()
 
   return (
     <footer className={classes.footer}>
       <Container maxWidth="xs">
         <Typography variant="body1">
-          {appStore.config?.footerMessage || 'Todos os direitos reservados'}
+          {appStore.config
+            ? appStore.config.footerMessage
+            : 'Todos os direitos reservados'}
         </Typography>
         <Typography variant="body2" color="textSecondary">
           {'Copyright © '}
           <Link
             color="inherit"
-            href={appStore.config?.companyUrl}
+            href={appStore.config ? appStore.config.companyUrl : ''}
             target="_blank"
           >
-            {appStore.config?.companyName}
+            {appStore.config ? appStore.config.companyName : ''}
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}
@@ -44,4 +45,4 @@ const Footer: FC = () => {
   )
 }
 
-export default observer(Footer)
+export default Footer

@@ -11,17 +11,18 @@ import Login from 'modules/pages/Login'
 import Recover from 'modules/pages/Recover'
 import { observer } from 'mobx-react-lite'
 import { TConfig } from 'modules/stores/AppStore'
-import { useStores } from 'modules/stores/use-stores'
+import { useModuleStores } from 'modules/stores/use-module-stores'
 import { CssBaseline, ThemeProvider, Theme } from '@material-ui/core'
 import Register from '../Register'
 
 interface IProps {
   config: TConfig
   theme: Theme
+  allowNewUsers: boolean
 }
 
 const App: React.FC<IProps> = ({ children, config, theme }) => {
-  const { appStore, userStore } = useStores()
+  const { appStore, userStore } = useModuleStores()
 
   useEffect(() => {
     appStore.setConfig(config)
@@ -43,12 +44,14 @@ const App: React.FC<IProps> = ({ children, config, theme }) => {
             >
               <Login />
             </OnlyLoggedOutRoute>
-            <OnlyLoggedOutRoute
-              path="/register"
-              logged={!!userStore.firebase.data}
-            >
-              <Register />
-            </OnlyLoggedOutRoute>
+            {appStore.config?.allowNewUsers && (
+              <OnlyLoggedOutRoute
+                path="/register"
+                logged={!!userStore.firebase.data}
+              >
+                <Register />
+              </OnlyLoggedOutRoute>
+            )}
             <OnlyLoggedOutRoute
               path="/recover"
               logged={!!userStore.firebase.data}

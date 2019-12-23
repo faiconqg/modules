@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { Avatar, TextField, Grid } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import { useStores } from 'modules/stores/use-stores'
+import { useModuleStores } from 'modules/stores/use-module-stores'
 import { observer } from 'mobx-react-lite'
 import BusyButton from 'modules/components/molecules/BusyButton'
 import Footer from 'modules/components/organisms/Footer'
@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 const Login: React.FC = () => {
   const classes = useStyles()
-  const { appStore, userStore } = useStores()
+  const { appStore, userStore } = useModuleStores()
 
   return (
     <div className={classes.root}>
@@ -122,11 +122,13 @@ const Login: React.FC = () => {
                       Esqueceu sua senha?
                     </Link>
                   </Grid>
-                  <Grid item>
-                    <Link to="register" className={classes.link}>
-                      Não tem conta?
-                    </Link>
-                  </Grid>
+                  {appStore.config?.allowNewUsers && (
+                    <Grid item>
+                      <Link to="register" className={classes.link}>
+                        Não tem conta?
+                      </Link>
+                    </Grid>
+                  )}
                 </Grid>
               </>
             )}

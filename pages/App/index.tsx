@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import * as serviceWorker from 'serviceWorker'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,8 +13,15 @@ import Recover from 'modules/pages/Recover'
 import { observer } from 'mobx-react-lite'
 import { TConfig } from 'modules/stores/AppStore'
 import { useModuleStores } from 'modules/stores/use-module-stores'
-import { CssBaseline, ThemeProvider, Theme } from '@material-ui/core'
+import {
+  CssBaseline,
+  ThemeProvider,
+  Theme,
+  Snackbar,
+  Button
+} from '@material-ui/core'
 import Register from '../Register'
+import InfoIcon from '@material-ui/icons/Info'
 
 interface IProps {
   config: TConfig
@@ -35,6 +43,7 @@ const App: React.FC<IProps> = ({ children, config, theme }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <UpdateController />
       {appStore.initialized ? (
         <Router>
           <Switch>
@@ -67,6 +76,52 @@ const App: React.FC<IProps> = ({ children, config, theme }) => {
         <Loading />
       )}
     </ThemeProvider>
+  )
+}
+
+const UpdateController: React.FC = () => {
+  const [worker, setWorker] = useState()
+
+  useEffect(() => {
+    serviceWorker.register({
+      onUpdate: registration => {
+        setWorker(registration.waiting)
+      }
+    })
+    navigator.serviceWorker.addEventListener('controllerchange', event => {
+      window.location.reload()
+    })
+  }, [])
+
+  return (
+    <Snackbar
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      open={!!worker}
+      message={
+        <span
+          id="message-id"
+          style={{
+            display: 'flex',
+            alignItems: 'center'
+          }}
+        >
+          <InfoIcon style={{ marginRight: 10 }} /> Atualização disponível
+        </span>
+      }
+      action={
+        <Button
+          color="primary"
+          size="small"
+          onClick={() =>
+            worker
+              ? worker.postMessage('skipWaiting')
+              : window.location.reload()
+          }
+        >
+          Atualizar Agora
+        </Button>
+      }
+    />
   )
 }
 

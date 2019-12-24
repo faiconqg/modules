@@ -114,7 +114,7 @@ const UpdateController: React.FC = () => {
           size="small"
           onClick={() =>
             worker
-              ? worker.postMessage('skipWaiting')
+              ? worker.postMessage({ type: 'SKIP_WAITING' })
               : window.location.reload()
           }
         >

@@ -13,6 +13,12 @@ const useStyles = makeStyles(theme => ({
       theme.palette.type === 'dark'
         ? theme.palette.grey[800]
         : theme.palette.grey[200]
+  },
+  version: {
+    top: 2,
+    right: 4,
+    position: 'absolute',
+    zIndex: 1
   }
 }))
 
@@ -24,7 +30,7 @@ const Footer: React.FC = () => {
     <footer className={classes.footer}>
       <Container maxWidth="xs">
         <Typography variant="body1">
-          {appStore.config
+          {appStore.config?.footerMessage
             ? appStore.config.footerMessage
             : 'Todos os direitos reservados'}
         </Typography>
@@ -39,6 +45,9 @@ const Footer: React.FC = () => {
           </Link>{' '}
           {new Date().getFullYear()}
           {'.'}
+        </Typography>
+        <Typography variant="caption" className={classes.version}>
+          v{process.env.REACT_APP_VERSION}
         </Typography>
       </Container>
     </footer>

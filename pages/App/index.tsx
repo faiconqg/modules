@@ -85,11 +85,11 @@ const UpdateController: React.FC = () => {
   useEffect(() => {
     serviceWorker.register({
       onUpdate: registration => {
+        navigator.serviceWorker.addEventListener('controllerchange', event => {
+          window.location.reload()
+        })
         setWorker(registration.waiting)
       }
-    })
-    navigator.serviceWorker.addEventListener('controllerchange', event => {
-      window.location.reload()
     })
   }, [])
 

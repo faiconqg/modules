@@ -7,7 +7,7 @@ import { useModuleStores } from 'modules/stores/use-module-stores'
 
 const useStyles = makeStyles(theme => ({
   footer: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(3, 0),
     marginTop: 'auto',
     backgroundColor:
       theme.palette.type === 'dark'

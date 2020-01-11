@@ -179,7 +179,7 @@ const Header: React.FC<IProps> = ({
           </ListItemIcon>
           <ListItemText secondary={user.email}>{user.displayName}</ListItemText>
         </MenuItem>
-        <Divider />
+        <Divider light />
         <MenuItem className={classes.menuItem} onClick={() => onExitClick()}>
           <ListItemIcon>
             <ExitToApp />

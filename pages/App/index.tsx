@@ -26,7 +26,6 @@ import InfoIcon from '@material-ui/icons/Info'
 interface IProps {
   config: TConfig
   theme: Theme
-  allowNewUsers: boolean
 }
 
 const App: React.FC<IProps> = ({ children, config, theme }) => {

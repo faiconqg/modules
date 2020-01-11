@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Footer: React.FC = () => {
+const LoginFooter: React.FC = () => {
   const classes = useStyles()
   const { appStore } = useModuleStores()
 
@@ -54,4 +54,4 @@ const Footer: React.FC = () => {
   )
 }
 
-export default Footer
+export default LoginFooter

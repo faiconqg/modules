@@ -8,8 +8,8 @@ import { Avatar, TextField, Grid } from '@material-ui/core'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { useModuleStores } from 'modules/stores/use-module-stores'
 import { observer } from 'mobx-react-lite'
-import BusyButton from 'modules/components/molecules/BusyButton'
-import Footer from 'modules/components/organisms/Footer'
+import BusyButton from 'modules/components/atoms/BusyButton'
+import LoginFooter from 'modules/components/molecules/LoginFooter'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -194,7 +194,7 @@ const Register: React.FC = () => {
           />
         </div>
       </Container>
-      <Footer />
+      <LoginFooter />
     </div>
   )
 }

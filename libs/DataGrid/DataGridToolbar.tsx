@@ -16,7 +16,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     flexShrink: 0,
-    borderRadius: 6
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8
   },
   flex: {
     display: 'flex',
@@ -64,6 +65,7 @@ export interface IDataGridToolbar {
   title: any
   busy: any
   searchableColumns?: IDataGridColumn[]
+  onSearch?: (searchTerm: string) => void
 }
 
 const DataGridToolbar: React.FC<IDataGridToolbar> = ({
@@ -72,6 +74,7 @@ const DataGridToolbar: React.FC<IDataGridToolbar> = ({
   controlBar,
   title,
   busy,
+  onSearch,
   searchableColumns
 }) => {
   const classes = useStyles({})
@@ -100,6 +103,7 @@ const DataGridToolbar: React.FC<IDataGridToolbar> = ({
             <SearchIcon className={classes.searchIcon} color="inherit" />
             <TextField
               fullWidth
+              onChange={event => onSearch && onSearch(event.target.value)}
               placeholder={`Pesquise por ${searchableColumns
                 .map(c => c.title || c.field)
                 .join(', ')

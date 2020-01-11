@@ -26,6 +26,8 @@ import '@ag-grid-community/all-modules/dist/styles/ag-theme-material.css'
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model'
 import clsx from 'clsx'
 import { observer } from 'mobx-react-lite'
+import _ from 'lodash'
+import { IDataGridColumn } from './DataGridColumn'
 
 const formatters = {
   cpf: CpfFormatter,
@@ -48,6 +50,10 @@ const useStyles = makeStyles(theme => ({
   },
   spacer: {
     flex: 'auto'
+  },
+  noRows: {
+    color: theme.palette.primary.dark,
+    fontWeight: 500
   },
   wrap: {
     justifyContent: 'flex-end',
@@ -102,7 +108,7 @@ export interface IDataGrid {
   busy?: any
   children?: any
   controlBar?: any
-  clientSide?: any
+  clientSide?: boolean
   statusRight?: any
   statusLeft?: any
   rowCount?: any
@@ -153,6 +159,7 @@ const DataGrid: React.FC<IDataGrid> = ({
   // const [currentOrderBy, setOrderBy] = useState(orderBy)
   const [currentPage, setPage] = useState(page || 0)
   const [currentRowsPerPage, setRowsPerPage] = useState(rowsPerPage || 10)
+  const [filteredRows, setFilteredRows] = useState()
   // const [selected, setSelected] = useState([])
   const classes = useStyles({})
   const apiRef = useRef<GridApi>()
@@ -237,11 +244,7 @@ const DataGrid: React.FC<IDataGrid> = ({
     if (params.column.colDef.label) {
       return params.column.colDef.label
     } else if (params.data) {
-      if (params.data.hasOwnProperty('g')) {
-        return params.data.g(params.column.colDef.field)
-      } else {
-        return params.data[params.column.colDef.field]
-      }
+      return _.get(params.data, params.column.colDef.field)
     } else {
       return ''
     }
@@ -426,11 +429,39 @@ const DataGrid: React.FC<IDataGrid> = ({
     return <div>Defina pelo menos duas colunas</div>
   }
 
-  const searchableColumns = getSearchableColumns(children)
+  const searchableColumns: IDataGridColumn[] = getSearchableColumns(children)
+
+  const resolveSearch = (searchTerm: string) => {
+    if (searchTerm.length > 0) {
+      setFilteredRows(
+        rows.filter((row: any) => {
+          for (const searchableColumn of searchableColumns) {
+            if (
+              resolveLabel(
+                searchableColumn.formatter,
+                searchableColumn.numeric,
+                searchableColumn.replaceBlank
+              )({ data: row, column: { colDef: searchableColumn } }).match(
+                new RegExp(searchTerm, 'gi')
+              )
+            ) {
+              return true
+            }
+          }
+          return false
+        })
+      )
+    } else {
+      setFilteredRows(undefined)
+    }
+  }
+
+  const currentRows = filteredRows || rows
 
   return (
     <Container className={classes.root} style={{ minHeight }}>
       <DataGridToolbar
+        onSearch={resolveSearch}
         searchableColumns={searchableColumns}
         busy={busy}
         title={title}
@@ -444,13 +475,14 @@ const DataGrid: React.FC<IDataGrid> = ({
           onSortChanged={onSortChanged}
           onRowClicked={params => handleClick(params.data.id, params.data)}
           onGridReady={onGridReady}
-          rowData={rows}
+          rowData={currentRows}
           pinnedBottomRowData={disableSummary ? undefined : resolveSummary()}
           rowSelection="multiple"
           enableRangeSelection
           columnDefs={getColumns(children)}
           localeText={agGridTranslation}
           getRowClass={getRowClass}
+          overlayNoRowsTemplate={`<div class='${classes.noRows}'><br/><br/><br/>Sem resultados</div>`}
           defaultColDef={{
             // filter: clientSide,
             sortable: true,
@@ -463,7 +495,9 @@ const DataGrid: React.FC<IDataGrid> = ({
           <div className={classes.statusBarInner}>{statusLeft}</div>
           <div className={clsx(classes.statusBarInner, classes.right)}>
             {statusRight}
-            {`${rows.length} ${rows.length === 1 ? 'linha' : 'linhas'}`}
+            {`${currentRows.length} ${
+              currentRows.length === 1 ? 'linha' : 'linhas'
+            }`}
           </div>
         </div>
       ) : (

@@ -9,7 +9,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import HomeIcon from '@material-ui/icons/Home'
 import { NavLink } from 'react-router-dom'
 import { CircularProgress, Icon, Typography } from '@material-ui/core'
 
@@ -80,12 +79,14 @@ const useStyles = makeStyles(theme => ({
 interface IProps extends SwipeableDrawerProps {
   onItemClick?: () => void
   routes: any[]
+  featureRoutes?: any[]
   config: any
   menuBusy: boolean
 }
 
 const Navigator: React.FC<IProps> = ({
   routes,
+  featureRoutes,
   config,
   menuBusy,
   onItemClick,
@@ -109,29 +110,34 @@ const Navigator: React.FC<IProps> = ({
             v{process.env.REACT_APP_VERSION}
           </Typography>
         </ListItem>
-        <NavLink
-          to="/"
-          exact
-          className={classes.link}
-          activeClassName={classes.itemActiveItem}
-        >
-          <ListItem
-            className={clsx(classes.item, classes.itemCategory)}
-            button
-            onClick={onItemClick}
-          >
-            <ListItemIcon className={classes.itemIcon}>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText
-              classes={{
-                primary: classes.itemPrimary
-              }}
+        {featureRoutes
+          ?.filter(f => !f.bottom)
+          .map(({ label, path, icon }) => (
+            <NavLink
+              key={label}
+              to={'/' + path}
+              exact={path.length === 0}
+              className={classes.link}
+              activeClassName={classes.itemActiveItem}
             >
-              Visão Geral
-            </ListItemText>
-          </ListItem>
-        </NavLink>
+              <ListItem
+                className={clsx(classes.item, classes.itemCategory)}
+                button
+                onClick={onItemClick}
+              >
+                <ListItemIcon className={classes.itemIcon}>
+                  <Icon className={classes.fontIcon}>{icon}</Icon>
+                </ListItemIcon>
+                <ListItemText
+                  classes={{
+                    primary: classes.itemPrimary
+                  }}
+                >
+                  {label}
+                </ListItemText>
+              </ListItem>
+            </NavLink>
+          ))}
         {menuBusy ? (
           <div className={classes.busyContainer}>
             <CircularProgress />
@@ -179,6 +185,34 @@ const Navigator: React.FC<IProps> = ({
             </React.Fragment>
           ))
         )}
+        {featureRoutes
+          ?.filter(f => f.bottom)
+          .map(({ label, path, icon }) => (
+            <NavLink
+              key={label}
+              to={'/' + path}
+              exact={path.length === 0}
+              className={classes.link}
+              activeClassName={classes.itemActiveItem}
+            >
+              <ListItem
+                className={clsx(classes.item, classes.itemCategory)}
+                button
+                onClick={onItemClick}
+              >
+                <ListItemIcon className={classes.itemIcon}>
+                  <Icon className={classes.fontIcon}>{icon}</Icon>
+                </ListItemIcon>
+                <ListItemText
+                  classes={{
+                    primary: classes.itemPrimary
+                  }}
+                >
+                  {label}
+                </ListItemText>
+              </ListItem>
+            </NavLink>
+          ))}
       </List>
     </SwipeableDrawer>
   )

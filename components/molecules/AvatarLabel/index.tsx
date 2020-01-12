@@ -2,10 +2,32 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { AvatarProps, Avatar } from '@material-ui/core'
 import Div from '../Div'
+import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
   avatar: {
     marginRight: theme.spacing(1)
+  },
+  inherit: {
+    backgroundColor: 'inherit'
+  },
+  primary: {
+    backgroundColor: theme.palette.primary.main
+  },
+  primaryLight: {
+    backgroundColor: theme.palette.primary.light
+  },
+  primaryDark: {
+    backgroundColor: theme.palette.primary.dark
+  },
+  secondary: {
+    backgroundColor: theme.palette.secondary.main
+  },
+  secondaryLight: {
+    backgroundColor: theme.palette.secondary.light
+  },
+  secondaryDark: {
+    backgroundColor: theme.palette.secondary.dark
   }
 }))
 
@@ -14,13 +36,22 @@ interface IAvatarLabel extends AvatarProps {
   icon?: any
   label?: string
   letters?: string
-  color?: string
+  color?:
+    | 'inherit'
+    | 'primary'
+    | 'primaryLight'
+    | 'primaryDark'
+    | 'secondary'
+    | 'secondaryLight'
+    | 'secondaryDark'
+  colorRaw?: string
   size?: number
 }
 
 const AvatarLabel: React.FC<IAvatarLabel> = ({
   label,
   color,
+  colorRaw,
   iconClass,
   icon,
   letters,
@@ -35,11 +66,11 @@ const AvatarLabel: React.FC<IAvatarLabel> = ({
     <Div flex alignItems="center">
       <Avatar
         {...props}
-        className={classes.avatar}
+        className={clsx(classes.avatar, classes[color || 'inherit'])}
         style={{
           width: size,
           height: size,
-          backgroundColor: color,
+          backgroundColor: colorRaw,
           fontSize: size / 2
         }}
       >

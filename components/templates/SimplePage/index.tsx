@@ -90,13 +90,10 @@ const SimplePage: React.FC<ISimplePageProps> = ({
             {buttons
               ? buttons.map(button => {
                   if (button.icon) {
-                    const Icon = button.icon
                     return (
                       <Grid item key={button.label}>
                         <Tooltip title={button.label} onClick={button.action}>
-                          <IconButton color="inherit">
-                            <Icon />
-                          </IconButton>
+                          <IconButton color="inherit">{button.icon}</IconButton>
                         </Tooltip>
                       </Grid>
                     )

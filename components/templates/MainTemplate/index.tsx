@@ -35,6 +35,7 @@ interface IProps {
   onExitClick: () => void
   config: any
   routes: any
+  featureRoutes: any
   headerButtons?: IHeaderButtons[]
   user: any
   menuBusy: boolean
@@ -43,6 +44,7 @@ interface IProps {
 const Main: React.FC<IProps> = ({
   config,
   routes,
+  featureRoutes,
   headerButtons,
   children,
   user,
@@ -65,6 +67,7 @@ const Main: React.FC<IProps> = ({
             config={config}
             menuBusy={menuBusy}
             routes={routes}
+            featureRoutes={featureRoutes}
             PaperProps={{ style: { width: window.drawerWidth } }}
             variant="temporary"
             open={mobileOpen}
@@ -77,6 +80,7 @@ const Main: React.FC<IProps> = ({
             config={config}
             menuBusy={menuBusy}
             routes={routes}
+            featureRoutes={featureRoutes}
             PaperProps={{ style: { width: window.drawerWidth } }}
             open={true}
             onOpen={handleDrawerToggle}

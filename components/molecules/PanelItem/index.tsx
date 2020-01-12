@@ -1,11 +1,12 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Paper, Typography, Grid, GridProps } from '@material-ui/core'
+import { Paper, Typography, Grid, GridProps, Button } from '@material-ui/core'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: theme.spacing(0.5, 1)
+    padding: theme.spacing(0.5, 1),
+    position: 'relative'
   },
   invert: {
     backgroundColor: 'rgba(255,255,255,0.1)',
@@ -16,7 +17,6 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary
   },
   header: {
-    // overflowX: 'auto',
     paddingBottom: theme.spacing(1),
     alignItems: 'center',
     display: 'flex'
@@ -25,10 +25,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: 13,
     paddingLeft: theme.spacing(0.5),
     lineHeight: 'unset',
-    wordBreak: 'break-word'
-  },
-  rightTitle: {
-    wordBreak: 'break-word'
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden'
   },
   left: {
     display: 'flex',
@@ -39,19 +38,28 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end'
+  },
+  button: {
+    position: 'absolute',
+    width: '100%',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0
   }
 }))
 
-interface IPanelItem extends GridProps {
+interface IPanelItem extends Omit<GridProps, 'onClick'> {
   icon?: any
   title?: string
   rightTitle?: string
   invert?: boolean
   right?: any
   left?: any
+  onClick?: () => void
 }
 
-const PanelItem: FC<IPanelItem> = ({
+const PanelItem: React.FC<IPanelItem> = ({
   icon,
   title,
   invert,
@@ -59,6 +67,7 @@ const PanelItem: FC<IPanelItem> = ({
   right,
   rightTitle,
   children,
+  onClick,
   xs = 12,
   item = true,
   ...props
@@ -74,6 +83,11 @@ const PanelItem: FC<IPanelItem> = ({
           invert ? classes.invert : classes.regular
         )}
       >
+        {!!onClick && (
+          <Button className={classes.button} onClick={onClick}>
+            {' '}
+          </Button>
+        )}
         {left || rightTitle || icon || !!title || !!right ? (
           <div className={classes.header}>
             {left && <div className={classes.left}>{left}</div>}
@@ -85,9 +99,7 @@ const PanelItem: FC<IPanelItem> = ({
             )}
             {right || rightTitle ? (
               <div className={classes.right}>
-                <Typography className={classes.rightTitle} variant="caption">
-                  {rightTitle}
-                </Typography>
+                <Typography variant="caption">{rightTitle}</Typography>
                 {right}
               </div>
             ) : null}

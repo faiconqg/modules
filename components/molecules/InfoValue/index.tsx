@@ -6,10 +6,10 @@ import Div from '../Div'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingRight: theme.spacing(2),
-    [theme.breakpoints.down('xs')]: {
-      paddingRight: theme.spacing(1)
-    }
+    // paddingRight: theme.spacing(2),
+    // [theme.breakpoints.down('xs')]: {
+    //   paddingRight: theme.spacing(1)
+    // }
   },
   padLeft: {
     paddingLeft: theme.spacing(3),
@@ -54,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 interface IInfoValue {
+  noPadding?: boolean
   padLeft?: boolean
   label?: string
   strongLabel?: boolean
@@ -74,7 +75,7 @@ interface IInfoValue {
 const InfoValue: FC<IInfoValue> = ({
   label,
   strongLabel,
-  padLeft,
+  noPadding = false,
   color,
   value,
   secondaryValue
@@ -82,7 +83,7 @@ const InfoValue: FC<IInfoValue> = ({
   const classes = useStyles()
 
   return (
-    <div className={clsx(classes.root, padLeft && classes.padLeft)}>
+    <div className={clsx(classes.root, !noPadding && classes.padLeft)}>
       <Typography
         variant="caption"
         className={strongLabel ? classes.strongLabel : undefined}

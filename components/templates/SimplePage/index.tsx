@@ -9,6 +9,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { Portal } from '@material-ui/core'
 import clsx from 'clsx'
+import ArrowBack from '@material-ui/icons/ArrowBack'
+import { useHistory } from 'react-router-dom'
 
 const lightColor = 'rgba(255, 255, 255, 0.7)'
 
@@ -65,6 +67,13 @@ const SimplePage: React.FC<ISimplePageProps> = ({
 }) => {
   const classes = useStyles({})
   const [mainHeader, setMainHeader] = useState()
+  const history = useHistory()
+
+  const splitedLocation = history.location.pathname.split('/')
+  const showBack =
+    history.length > 2 &&
+    splitedLocation.length > 2 &&
+    splitedLocation[2].length > 0
 
   useEffect(() => {
     setMainHeader(document.getElementById('main-header'))
@@ -82,6 +91,11 @@ const SimplePage: React.FC<ISimplePageProps> = ({
         <Portal container={mainHeader}>{header}</Portal>
         <Toolbar>
           <Grid container alignItems="center" spacing={1}>
+            {showBack && (
+              <IconButton color="inherit" onClick={() => history.goBack()}>
+                <ArrowBack />
+              </IconButton>
+            )}
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
                 {header}

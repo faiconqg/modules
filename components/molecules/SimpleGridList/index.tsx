@@ -41,7 +41,7 @@ const SimpleGridList: React.FC<ISimpleGridList> = ({
   return (
     <GridList
       spacing={0}
-      style={{ margin: -4 }}
+      style={{ margin: -8 }}
       cellHeight={cellHeight}
       cols={cols}
       {...props}

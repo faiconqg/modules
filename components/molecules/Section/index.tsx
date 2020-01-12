@@ -28,11 +28,9 @@ const Section: FC<ISection> = ({ title, right, children }) => {
     <section className={classes.root}>
       {title || right ? (
         <Div flex alignItems="center" className={classes.header}>
-          {title && (
-            <Div flex alignItems="center" className={classes.title}>
-              <Typography variant="h6">{title}</Typography>
-            </Div>
-          )}
+          <Div flex alignItems="center" className={classes.title}>
+            <Typography variant="h6">{title || '⠀'}</Typography>
+          </Div>
           {right && (
             <Div flex full alignItems="center" justify="flexEnd">
               {right}

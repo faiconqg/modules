@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Paper, Typography, Grid, GridProps, Button } from '@material-ui/core'
 import clsx from 'clsx'
+import { Lk } from 'modules/libs/Navigation'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -56,6 +57,7 @@ interface IPanelItem extends Omit<GridProps, 'onClick'> {
   invert?: boolean
   right?: any
   left?: any
+  to?: any
   onClick?: () => void
 }
 
@@ -68,6 +70,7 @@ const PanelItem: React.FC<IPanelItem> = ({
   rightTitle,
   children,
   onClick,
+  to,
   xs = 12,
   item = true,
   ...props
@@ -83,7 +86,15 @@ const PanelItem: React.FC<IPanelItem> = ({
           invert ? classes.invert : classes.regular
         )}
       >
-        {!!onClick && (
+        {to && (
+          <Lk to={to}>
+            <Button className={classes.button} onClick={onClick}>
+              {' '}
+            </Button>
+          </Lk>
+        )}
+
+        {onClick && (
           <Button className={classes.button} onClick={onClick}>
             {' '}
           </Button>

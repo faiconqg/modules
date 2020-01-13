@@ -1,12 +1,19 @@
 import { observable, action } from 'mobx'
 import { appStore } from 'modules/stores'
+import _ from 'lodash'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-export default class Base {
-  constructor(endpoint: string, method: Method, data?: object) {
+export default class Base<T> {
+  constructor(
+    endpoint: string,
+    method: Method,
+    relation: any[] = [],
+    data?: T
+  ) {
     this.endpoint = endpoint
     this.method = method
+    this.relation = relation
     this.data = data
   }
 
@@ -20,10 +27,19 @@ export default class Base {
   busy: boolean = false
 
   @observable
-  data?: any
+  data?: T | T[]
 
   @observable
   error?: any
+
+  relation?: any
+
+  @action
+  tryFetch(body?: object) {
+    if (!this.data) {
+      return this.fetch(body)
+    }
+  }
 
   @action
   fetch(body?: object) {
@@ -44,7 +60,13 @@ export default class Base {
         }
       })
       .then(this.resolveResult.bind(this))
-      .catch(e => e.then(this.resolveError.bind(this)))
+      .catch(e => {
+        if (e.then) {
+          return e.then(this.resolveError.bind(this))
+        } else {
+          return this.resolveError(e)
+        }
+      })
       .finally(
         action(() => {
           this.busy = false
@@ -54,15 +76,17 @@ export default class Base {
 
   @action
   resolveError(json: any) {
+    console.log(json)
     this.error = json.error ? json.error : json
   }
 
   @action
-  resolveResult(json: object) {
+  resolveResult(json: T) {
     this.data = json
   }
 
   get(path?: string) {
-    return path ? (this.data ? this.data[path] : null) : this.data
+    // return path ? (this.data ? this.data[path] : null) : this.data
+    return path ? _.get(this.data, path) : this.data
   }
 }

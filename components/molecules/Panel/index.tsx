@@ -49,6 +49,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end'
+  },
+  fullWidth: {
+    width: '100%'
   }
 }))
 
@@ -57,6 +60,7 @@ interface IPanel extends GridProps {
   title?: string
   rightTitle?: string
   invert?: boolean
+  fullWidth?: boolean
   right?: any
   left?: any
   footer?: any
@@ -71,6 +75,7 @@ const Panel: React.FC<IPanel> = ({
   footer,
   rightTitle,
   children,
+  fullWidth,
   container = true,
   ...props
 }) => {
@@ -78,7 +83,11 @@ const Panel: React.FC<IPanel> = ({
 
   return (
     <Paper
-      className={clsx(classes.root, invert ? classes.invert : classes.regular)}
+      className={clsx(
+        classes.root,
+        invert ? classes.invert : classes.regular,
+        fullWidth && classes.fullWidth
+      )}
     >
       {left || rightTitle || icon || !!title || !!right ? (
         <div className={classes.header}>

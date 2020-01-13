@@ -28,6 +28,8 @@ import CurrencyFormatter from 'modules/utils/formatters/CurrencyFormatter'
 import DateFormatter from 'modules/utils/formatters/DateFormatter'
 import DateTimeFormatter from 'modules/utils/formatters/DateTimeFormatter'
 import PercentageFormatter from 'modules/utils/formatters/PercentageFormatter'
+import Model from '../API/Model'
+import Collection from '../API/Collection'
 
 const formatters = {
   cpf: CpfFormatter,
@@ -107,6 +109,7 @@ export interface IDataGrid {
   titleBar?: any
   busy?: any
   children?: any
+  collection?: Collection<{ [prop: string]: any }[]>
   controlBar?: any
   clientSide?: boolean
   statusRight?: any
@@ -117,14 +120,14 @@ export interface IDataGrid {
   disablePaper?: any
   disableSummary?: any
   onSortChanged?: any
-  minHeight?: any
+  height?: any
   order?: any
   orderBy?: any
   page?: any
   rowsPerPage?: any
   fieldsToSummary?: any
   onRequestSort?: (order: any, orderBy: any) => void
-  onItemClick?: (id: any, data: any) => void
+  onItemClick?: (data: Model<{ [prop: string]: any }>) => void
   onChangePage?: (page: any) => void
   onChangeRowsPerPage?: (value: any) => void
 }
@@ -135,6 +138,7 @@ const DataGrid: React.FC<IDataGrid> = ({
   busy,
   children,
   controlBar,
+  collection,
   clientSide,
   statusRight,
   statusLeft,
@@ -144,7 +148,7 @@ const DataGrid: React.FC<IDataGrid> = ({
   disablePaper,
   disableSummary,
   onSortChanged,
-  minHeight = 'auto',
+  height,
   order,
   orderBy,
   page,
@@ -185,9 +189,13 @@ const DataGrid: React.FC<IDataGrid> = ({
   //   setSelected([])
   // }
 
-  const handleClick = (id: any, data: any) => {
+  const handleClick = (params: any) => {
     if (onItemClick) {
-      onItemClick(id, data)
+      if (params.data instanceof Model) {
+        onItemClick(params.data)
+      } else {
+        onItemClick(new Model('', 'GET', params.data))
+      }
     }
   }
 
@@ -244,7 +252,9 @@ const DataGrid: React.FC<IDataGrid> = ({
     if (params.column.colDef.label) {
       return params.column.colDef.label
     } else if (params.data) {
-      return _.get(params.data, params.column.colDef.field)
+      return params.data.get
+        ? params.data.get(params.column.colDef.field)
+        : _.get(params.data, params.column.colDef.field)
     } else {
       return ''
     }
@@ -455,11 +465,15 @@ const DataGrid: React.FC<IDataGrid> = ({
       setFilteredRows(undefined)
     }
   }
+  if (collection) {
+    busy = collection.busy
+    rows = collection.data
+  }
 
-  const currentRows = filteredRows || rows
+  const currentRows = filteredRows || rows || []
 
   return (
-    <Container className={classes.root} style={{ minHeight }}>
+    <Container className={classes.root}>
       <DataGridToolbar
         onSearch={resolveSearch}
         searchableColumns={searchableColumns}
@@ -468,12 +482,15 @@ const DataGrid: React.FC<IDataGrid> = ({
         titleBar={titleBar}
         controlBar={controlBar}
       />
-      <div className={clsx(classes.tableWrapper, 'ag-theme-material')}>
+      <div
+        className={clsx(classes.tableWrapper, 'ag-theme-material')}
+        style={{ height }}
+      >
         <AgGridReact
           modules={[ClientSideRowModelModule]}
-          domLayout="autoHeight"
+          domLayout={height ? undefined : 'autoHeight'}
           onSortChanged={onSortChanged}
-          onRowClicked={params => handleClick(params.data.id, params.data)}
+          onRowClicked={params => handleClick(params)}
           onGridReady={onGridReady}
           rowData={currentRows}
           pinnedBottomRowData={disableSummary ? undefined : resolveSummary()}
@@ -482,7 +499,8 @@ const DataGrid: React.FC<IDataGrid> = ({
           columnDefs={getColumns(children)}
           localeText={agGridTranslation}
           getRowClass={getRowClass}
-          overlayNoRowsTemplate={`<div class='${classes.noRows}'><br/><br/><br/>Sem resultados</div>`}
+          overlayNoRowsTemplate={`<div class='${classes.noRows}'><br/>
+          <br/><br/>Sem resultados</div>`}
           defaultColDef={{
             // filter: clientSide,
             sortable: true,

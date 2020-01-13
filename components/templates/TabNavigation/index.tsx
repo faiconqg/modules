@@ -22,12 +22,21 @@ const useStyles = makeStyles(theme => ({
   },
   feature: {
     marginTop: -360
+  },
+  center: {
+    maxWidth: 936,
+    margin: 'auto'
   }
 }))
 
 interface IProps extends ISimplePageProps {}
 
-const TabNavigation: React.FC<IProps> = ({ children, feature, ...props }) => {
+const TabNavigation: React.FC<IProps> = ({
+  children,
+  center,
+  feature,
+  ...props
+}) => {
   const classes = useStyles({})
   const [value, setValue] = useState(0)
 
@@ -61,8 +70,16 @@ const TabNavigation: React.FC<IProps> = ({ children, feature, ...props }) => {
             </Tabs>
           </AppBar>
           <main className={classes.main}>
-            {React.Children.map(children, (tabItem, index) =>
-              value === index ? tabItem : null
+            {center ? (
+              <div className={classes.center}>
+                {React.Children.map(children, (tabItem, index) =>
+                  value === index ? tabItem : null
+                )}
+              </div>
+            ) : (
+              React.Children.map(children, (tabItem, index) =>
+                value === index ? tabItem : null
+              )
             )}
           </main>
         </div>

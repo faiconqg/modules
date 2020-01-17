@@ -11,6 +11,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { NavLink } from 'react-router-dom'
 import { CircularProgress, Icon, Typography } from '@material-ui/core'
+import { TConfig } from 'modules/stores/AppStore'
 
 const useStyles = makeStyles(theme => ({
   categoryHeader: {
@@ -55,8 +56,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2)
   },
   logo: {
-    width: 36,
+    objectFit: 'contain',
+    maxWidth: (window.drawerWidth || 0) - theme.spacing(4),
     height: 36
+  },
+  logoContainer: {
+    minWidth: 'unset'
   },
   busyContainer: {
     padding: 20,
@@ -80,7 +85,7 @@ interface IProps extends SwipeableDrawerProps {
   onItemClick?: () => void
   routes: any[]
   featureRoutes?: any[]
-  config: any
+  config: TConfig
   menuBusy: boolean
 }
 
@@ -101,11 +106,13 @@ const Navigator: React.FC<IProps> = ({
           className={clsx(classes.firebase, classes.item, classes.itemCategory)}
         >
           {config.appIcon && (
-            <ListItemIcon>
+            <ListItemIcon className={classes.logoContainer}>
               <img src={config.appIcon} alt="logo" className={classes.logo} />
             </ListItemIcon>
           )}
-          <ListItemText primary={config.appName} />
+          {config.displayAppNameInMenuHeader && (
+            <ListItemText primary={config.appName} />
+          )}
           <Typography variant="caption" className={classes.version}>
             v{process.env.REACT_APP_VERSION}
           </Typography>

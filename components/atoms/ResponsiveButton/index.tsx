@@ -19,7 +19,7 @@ const ResponsiveButton: FC<IProps> = ({ label, icon, ...props }) => {
       </Hidden>
       <Hidden xsDown>
         <Button variant="contained" {...props}>
-          Nova vistoria
+          {label}
         </Button>
       </Hidden>
     </>

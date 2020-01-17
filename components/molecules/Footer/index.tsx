@@ -20,7 +20,7 @@ const Footer: React.FC<IProps> = ({ config = {} }) => {
   return (
     <footer className={classes.footer}>
       <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
+        {'© '}
         <Link color="inherit" href={config.companyUrl} target="_blank">
           {config.companyName}
         </Link>{' '}

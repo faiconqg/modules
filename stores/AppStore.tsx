@@ -10,7 +10,10 @@ export type TConfig = {
   companyUrl: string
   footerMessage?: string
   apiUrl?: string
+  appIcon?: any
   allowNewUsers?: boolean
+  displayAppNameInMenuHeader?: boolean
+  loginBottomText?: string
 }
 
 export default class AppStore {

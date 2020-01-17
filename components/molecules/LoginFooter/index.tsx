@@ -35,7 +35,7 @@ const LoginFooter: React.FC = () => {
             : 'Todos os direitos reservados'}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {'Copyright © '}
+          {'© '}
           <Link
             color="inherit"
             href={appStore.config ? appStore.config.companyUrl : ''}

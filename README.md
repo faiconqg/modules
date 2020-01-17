@@ -21,6 +21,8 @@ cd my-project
 ## 3. Import this project as a git submodule:
 
 ```bash
+# init repository if needed
+# git init
 git submodule add https://github.com/faiconqg/react-modules.git src/modules
 ```
 

@@ -25,15 +25,20 @@ import InfoIcon from '@material-ui/icons/Info'
 
 interface IProps {
   config: TConfig
+  firebaseConfig?: any
   theme: Theme
 }
 
-const App: React.FC<IProps> = ({ children, config, theme }) => {
+const App: React.FC<IProps> = ({ children, config, firebaseConfig, theme }) => {
   const { appStore, userStore } = useModuleStores()
 
   useEffect(() => {
     appStore.setConfig(config)
   }, [config, appStore])
+
+  useEffect(() => {
+    appStore.setFirebaseConfig(firebaseConfig)
+  }, [appStore, firebaseConfig])
 
   if (!appStore.configResolved) {
     return null

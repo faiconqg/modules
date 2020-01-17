@@ -1,8 +1,8 @@
 import * as firebase from 'firebase/app'
-import firebaseConfig from 'firebase.json'
 import { observable, action } from 'mobx'
 import * as mobx from 'mobx'
 import Model from 'modules/libs/API/Model'
+import { userStore } from '.'
 
 export type TConfig = {
   appName: string
@@ -19,7 +19,6 @@ export type TConfig = {
 export default class AppStore {
   constructor() {
     mobx.configure({ enforceActions: 'observed' })
-    firebase.initializeApp(firebaseConfig)
   }
 
   @observable
@@ -30,6 +29,8 @@ export default class AppStore {
 
   @observable
   config: TConfig | undefined
+
+  firebaseConfig?: object
 
   @observable
   configResolved: boolean = false
@@ -43,6 +44,25 @@ export default class AppStore {
   setConfig(config: TConfig) {
     this.config = Object.assign({ allowNewUsers: true }, config)
     this.configResolved = true
+  }
+
+  @action
+  setFirebaseConfig(firebaseConfig: any) {
+    if (firebaseConfig) {
+      this.firebaseConfig = firebaseConfig
+      firebase.initializeApp(firebaseConfig)
+
+      firebase.auth().onAuthStateChanged(user => {
+        this.setInitialized()
+        if (user) {
+          userStore.setUser(user)
+        } else {
+          userStore.clearUser()
+        }
+      })
+    } else {
+      this.setInitialized()
+    }
   }
 
   @action

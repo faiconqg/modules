@@ -274,6 +274,7 @@ ReactDOM.render(
       apiUrl: process.env.REACT_APP_API_URL,
       appIcon: require('resources/images/logo.png')
     })}
+    firebaseConfig={firebaseConfig}
     theme={theme}
   >
     <Root />

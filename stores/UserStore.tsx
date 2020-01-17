@@ -14,17 +14,6 @@ const errorMessages = {
 }
 
 export default class UserStore {
-  constructor() {
-    firebase.auth().onAuthStateChanged(user => {
-      appStore.setInitialized()
-      if (user) {
-        this.setUser(user)
-      } else {
-        this.clearUser()
-      }
-    })
-  }
-
   @observable
   firebase: TModel = {
     busy: false,

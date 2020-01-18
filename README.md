@@ -224,7 +224,7 @@ const Root: React.FC = () => {
       ]}
       routes={[
         {
-          label: 'Test1',
+          label: 'Test',
           routes: [
             {
               path: 'sample_simple',
@@ -235,19 +235,14 @@ const Root: React.FC = () => {
           ]
         },
         {
-          label: 'Tabs',
+          label: 'Samples',
           routes: [
             {
               path: 'sample_tab',
               label: 'Tabs',
               icon: 'calendar_today',
               page: SampleTab
-            }
-          ]
-        },
-        {
-          label: 'Feature',
-          routes: [
+            },
             {
               path: 'sample_feature',
               label: 'Feature',

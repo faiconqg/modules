@@ -62,6 +62,7 @@ export interface IDataGridToolbar {
   numSelected?: any
   titleBar: any
   controlBar: any
+  elevation?: number
   title: any
   busy: any
   searchableColumns?: IDataGridColumn[]
@@ -72,6 +73,7 @@ const DataGridToolbar: React.FC<IDataGridToolbar> = ({
   numSelected,
   titleBar,
   controlBar,
+  elevation = 1,
   title,
   busy,
   onSearch,
@@ -80,7 +82,7 @@ const DataGridToolbar: React.FC<IDataGridToolbar> = ({
   const classes = useStyles({})
 
   return (
-    <Paper className={classes.root} square>
+    <Paper className={classes.root} elevation={elevation}>
       <div className={classes.flex}>
         <div className={classes.title}>
           {numSelected > 0 ? (

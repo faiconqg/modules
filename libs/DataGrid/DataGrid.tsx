@@ -117,7 +117,7 @@ export interface IDataGrid {
   rowCount?: any
   title?: any
   busyCount?: any
-  disablePaper?: any
+  elevation?: number
   disableSummary?: any
   onSortChanged?: any
   height?: any
@@ -145,9 +145,9 @@ const DataGrid: React.FC<IDataGrid> = ({
   rowCount,
   title,
   busyCount,
-  disablePaper,
   disableSummary,
   onSortChanged,
+  elevation = 1,
   height,
   order,
   orderBy,
@@ -433,8 +433,6 @@ const DataGrid: React.FC<IDataGrid> = ({
     autosizeColumnsIfNeeded()
   }
 
-  const Container = disablePaper ? Div : Paper
-
   if (!children || !Array.isArray(children)) {
     return <div>Defina pelo menos duas colunas</div>
   }
@@ -473,10 +471,11 @@ const DataGrid: React.FC<IDataGrid> = ({
   const currentRows = filteredRows || rows || []
 
   return (
-    <Container className={classes.root}>
+    <Paper className={classes.root} elevation={elevation}>
       <DataGridToolbar
         onSearch={resolveSearch}
         searchableColumns={searchableColumns}
+        elevation={elevation}
         busy={busy}
         title={title}
         titleBar={titleBar}
@@ -548,14 +547,10 @@ const DataGrid: React.FC<IDataGrid> = ({
           }}
         />
       )}
-    </Container>
+    </Paper>
   )
 }
 
 interface IDiv extends React.HTMLProps<HTMLDivElement> {}
-
-const Div: React.FC<IDiv> = ({ children, ...props }) => {
-  return <div {...props} />
-}
 
 export default observer(DataGrid)

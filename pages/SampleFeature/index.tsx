@@ -95,6 +95,15 @@ const SampleFeature: React.FC = () => {
               onClick={() => console.log('click feature3')}
             />
           </Grid>
+          <Grid item xs={12} md={4}>
+            <FeatureCard primary="Small 1" size="small" color="#b71c1c" />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <FeatureCard primary="Small 2" size="small" color="#33691e" />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <FeatureCard primary="Small 3" size="small" color="#01579b" />
+          </Grid>
         </Grid>
       </Section>
     </FeaturePage>

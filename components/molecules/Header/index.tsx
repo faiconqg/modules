@@ -20,6 +20,8 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core'
+import { headerBackground } from 'modules/components/templates/MainTemplate'
+import { observer } from 'mobx-react-lite'
 
 const lightColor = 'rgba(255, 255, 255, 0.7)'
 
@@ -54,6 +56,9 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: theme.palette.secondary.main
+  },
+  appBarElevation: {
+    zIndex: 1102
   }
 }))
 
@@ -82,7 +87,7 @@ const Header: React.FC<IProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      const result = window.scrollY > 30
+      const result = window.scrollY > 40
       if (result !== showHeader) {
         setShowHeader(result)
       }
@@ -95,7 +100,13 @@ const Header: React.FC<IProps> = ({
 
   return (
     <React.Fragment>
-      <AppBar color="primary" position="sticky" elevation={showHeader ? 2 : 0}>
+      <AppBar
+        color="primary"
+        position="sticky"
+        elevation={showHeader ? 2 : 0}
+        className={showHeader ? classes.appBarElevation : undefined}
+        style={{ background: headerBackground.get() }}
+      >
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Hidden smUp>
@@ -191,4 +202,4 @@ const Header: React.FC<IProps> = ({
   )
 }
 
-export default Header
+export default observer(Header)

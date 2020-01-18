@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import MainTemplate from 'modules/components/templates/MainTemplate'
 import { useModuleStores } from 'modules/stores/use-module-stores'
 import { IHeaderButtons } from 'modules/components/molecules/Header'
+import { ScrollToTop } from '../Navigation'
 
 type TAutoRouteItem = {
   path: string
@@ -33,6 +34,7 @@ const AutoRoute: React.FC<IAutoRoute> = ({
   const { appStore, userStore } = useModuleStores()
   return (
     <Router>
+      <ScrollToTop />
       <Switch>
         <Route path="/">
           <MainTemplate

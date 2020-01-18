@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   center: {
     maxWidth: 936,
+    boxSizing: 'content-box',
     margin: 'auto'
   }
 }))

@@ -2,7 +2,13 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
-const useStyles = makeStyles(theme => ({
+export const useGenericContainerStyles = makeStyles(theme => ({
+  fullWidth: {
+    width: '100%'
+  },
+  fullHeight: {
+    height: '100%'
+  },
   xs: {
     minHeight: 40
   },
@@ -18,6 +24,21 @@ const useStyles = makeStyles(theme => ({
   xl: {
     minHeight: 640
   },
+  xsMax: {
+    maxHeight: 40
+  },
+  smMax: {
+    maxHeight: 80
+  },
+  mdMax: {
+    maxHeight: 160
+  },
+  lgMax: {
+    maxHeight: 320
+  },
+  xlMax: {
+    maxHeight: 640
+  },
   xsFix: {
     minHeight: 40
   },
@@ -32,6 +53,51 @@ const useStyles = makeStyles(theme => ({
   },
   xlFix: {
     height: 640
+  },
+  xsW: {
+    minWidth: 40
+  },
+  smW: {
+    minWidth: 80
+  },
+  mdW: {
+    minWidth: 160
+  },
+  lgW: {
+    minWidth: 320
+  },
+  xlW: {
+    minWidth: 640
+  },
+  xsMaxW: {
+    maxWidth: 40
+  },
+  smMaxW: {
+    maxWidth: 80
+  },
+  mdMaxW: {
+    maxWidth: 160
+  },
+  lgMaxW: {
+    maxWidth: 320
+  },
+  xlMaxW: {
+    maxWidth: 640
+  },
+  xsFixW: {
+    minWidth: 40
+  },
+  smFixW: {
+    width: 80
+  },
+  mdFixW: {
+    width: 160
+  },
+  lgFixW: {
+    width: 320
+  },
+  xlFixW: {
+    width: 640
   },
   flex: {
     display: 'flex'
@@ -257,54 +323,17 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-interface IDiv extends React.HTMLProps<HTMLDivElement> {
-  minHeight?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  fix?: boolean
-  flex?: boolean
-  full?: boolean
-  shrink?: boolean
-  padding?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  paddingRight?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  paddingLeft?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  paddingTop?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  paddingBottom?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  margin?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  marginRight?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  marginLeft?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  marginTop?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  marginBottom?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
-  justify?:
-    | 'flexStart'
-    | 'center'
-    | 'flexEnd'
-    | 'spaceBetween'
-    | 'spaceAround'
-    | 'spaceEvenly'
-  direction?: 'row' | 'rowReverse' | 'column' | 'columnReverse'
-  wrap?: 'nowrap' | 'wrap' | 'wrapReverse'
-  alignContent?:
-    | 'stretch'
-    | 'center'
-    | 'flexStart'
-    | 'flexEnd'
-    | 'spaceBetween'
-    | 'spaceAround'
-  alignItems?: 'flexStart' | 'center' | 'flexEnd' | 'stretch' | 'baseline'
-  color?:
-    | 'inherit'
-    | 'primary'
-    | 'primaryLight'
-    | 'primaryDark'
-    | 'secondary'
-    | 'secondaryLight'
-    | 'secondaryDark'
-}
-
-const Div: React.FC<IDiv> = ({
+export const useGenericContainerClasses = ({
+  fullWidth,
+  fullHeight,
   minHeight,
+  maxHeight,
+  height,
+  minWidth,
+  maxWidth,
+  width,
   className,
   flex,
-  fix,
   full,
   shrink,
   justify,
@@ -324,24 +353,48 @@ const Div: React.FC<IDiv> = ({
   marginTop,
   marginBottom,
   ...props
-}) => {
-  const classes = useStyles()
+}: IGenericContainer) => {
+  const classes = useGenericContainerStyles()
 
-  return (
-    <div
-      {...props}
-      className={clsx(
-        minHeight &&
-          (fix
-            ? classes[
-                (minHeight + 'Fix') as
-                  | 'xsFix'
-                  | 'smFix'
-                  | 'mdFix'
-                  | 'lgFix'
-                  | 'xlFix'
-              ]
-            : classes[minHeight]),
+  return [
+    ' ' +
+      clsx(
+        fullWidth && classes.fullWidth,
+        fullHeight && classes.fullHeight,
+        height &&
+          classes[
+            (height + 'Fix') as 'xsFix' | 'smFix' | 'mdFix' | 'lgFix' | 'xlFix'
+          ],
+        minHeight && classes[minHeight],
+        maxHeight &&
+          classes[
+            (maxHeight + 'Max') as
+              | 'xsMax'
+              | 'smMax'
+              | 'mdMax'
+              | 'lgMax'
+              | 'xlMax'
+          ],
+        width &&
+          classes[
+            (width + 'FixW') as
+              | 'xsFixW'
+              | 'smFixW'
+              | 'mdFixW'
+              | 'lgFixW'
+              | 'xlFixW'
+          ],
+        minWidth &&
+          classes[(minWidth + 'W') as 'xsW' | 'smW' | 'mdW' | 'lgW' | 'xlW'],
+        maxWidth &&
+          classes[
+            (maxWidth + 'MaxW') as
+              | 'xsMaxW'
+              | 'smMaxW'
+              | 'mdMaxW'
+              | 'lgMaxW'
+              | 'xlMaxW'
+          ],
         justify &&
           classes[
             ('j' + justify) as
@@ -458,9 +511,64 @@ const Div: React.FC<IDiv> = ({
               | 'mbspacing4'
           ],
         className
-      )}
-    />
-  )
+      ),
+    props
+  ] as [string, object]
+}
+
+export interface IGenericContainer extends React.HTMLProps<HTMLDivElement> {
+  fullWidth?: boolean
+  fullHeight?: boolean
+  minHeight?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  maxHeight?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  height?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  minWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  width?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  flex?: boolean
+  full?: boolean
+  shrink?: boolean
+  padding?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  paddingRight?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  paddingLeft?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  paddingTop?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  paddingBottom?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  margin?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  marginRight?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  marginLeft?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  marginTop?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  marginBottom?: 'spacing1' | 'spacing2' | 'spacing3' | 'spacing4'
+  justify?:
+    | 'flexStart'
+    | 'center'
+    | 'flexEnd'
+    | 'spaceBetween'
+    | 'spaceAround'
+    | 'spaceEvenly'
+  direction?: 'row' | 'rowReverse' | 'column' | 'columnReverse'
+  wrap?: 'nowrap' | 'wrap' | 'wrapReverse'
+  alignContent?:
+    | 'stretch'
+    | 'center'
+    | 'flexStart'
+    | 'flexEnd'
+    | 'spaceBetween'
+    | 'spaceAround'
+  alignItems?: 'flexStart' | 'center' | 'flexEnd' | 'stretch' | 'baseline'
+  color?:
+    | 'inherit'
+    | 'primary'
+    | 'primaryLight'
+    | 'primaryDark'
+    | 'secondary'
+    | 'secondaryLight'
+    | 'secondaryDark'
+}
+
+const Div: React.FC<IGenericContainer> = props => {
+  const [classNames, rest] = useGenericContainerClasses(props)
+
+  return <div {...rest} className={classNames} />
 }
 
 export default Div

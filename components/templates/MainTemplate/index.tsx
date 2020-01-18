@@ -4,6 +4,7 @@ import Hidden from '@material-ui/core/Hidden'
 import Navigator from './../../organisms/Navigator'
 import Header, { IHeaderButtons } from './../../molecules/Header'
 import Footer from './../../molecules/Footer'
+import { observable } from 'mobx'
 
 declare global {
   interface Window {
@@ -12,6 +13,8 @@ declare global {
 }
 
 window.drawerWidth = 256
+
+export let headerBackground = observable.box()
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-interface IProps {
+interface IMain {
   onExitClick: () => void
   config: any
   routes: any
@@ -39,9 +42,10 @@ interface IProps {
   headerButtons?: IHeaderButtons[]
   user: any
   menuBusy: boolean
+  children: React.ReactNode
 }
 
-const Main: React.FC<IProps> = ({
+const Main: React.FC<IMain> = ({
   config,
   routes,
   featureRoutes,

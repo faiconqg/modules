@@ -63,6 +63,9 @@ const useStyles = makeStyles(theme => ({
   logoContainer: {
     minWidth: 'unset'
   },
+  titleContainer: {
+    marginLeft: theme.spacing(2)
+  },
   busyContainer: {
     padding: 20,
     display: 'flex',
@@ -111,7 +114,10 @@ const Navigator: React.FC<IProps> = ({
             </ListItemIcon>
           )}
           {config.displayAppNameInMenuHeader && (
-            <ListItemText primary={config.appName} />
+            <ListItemText
+              className={classes.titleContainer}
+              primary={config.appName}
+            />
           )}
           <Typography variant="caption" className={classes.version}>
             v{process.env.REACT_APP_VERSION}

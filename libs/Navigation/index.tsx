@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Route,
   useRouteMatch,
   Switch,
   useParams,
   LinkProps,
-  Link
+  Link,
+  useLocation
 } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core'
 
@@ -66,4 +67,14 @@ export const Lk: React.FC<LinkProps> = ({ to, ...props }) => {
   const classes = useStyles()
 
   return <Link to={match.path + to} {...props} className={classes.link} />
+}
+
+export const ScrollToTop: React.FC = () => {
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
+  return null
 }

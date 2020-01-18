@@ -2,10 +2,11 @@ import React, { FC } from 'react'
 import { makeStyles, darken } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 import Div from '../Div'
+import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(3)
   },
   header: {
     color: darken(theme.palette.primary.light, 0.6)
@@ -13,19 +14,26 @@ const useStyles = makeStyles(theme => ({
   title: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2)
+  },
+  divider: {
+    borderBottomColor: 'rgba(0,0,0,0.12)',
+    borderBottomWidth: 1,
+    borderBottomStyle: 'solid',
+    marginBottom: theme.spacing(2)
   }
 }))
 
 interface ISection {
   title?: string
   right?: any
+  divider?: boolean
 }
 
-const Section: FC<ISection> = ({ title, right, children }) => {
+const Section: FC<ISection> = ({ title, right, divider, children }) => {
   const classes = useStyles()
 
   return (
-    <section className={classes.root}>
+    <section className={clsx(classes.root, divider && classes.divider)}>
       {title || right ? (
         <Div flex alignItems="center" className={classes.header}>
           <Div flex alignItems="center" className={classes.title}>

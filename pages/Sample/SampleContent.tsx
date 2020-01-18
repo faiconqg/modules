@@ -139,7 +139,7 @@ const SampleContent: React.FC = () => {
               color="textPrimary"
             />
 
-            <Div minHeight="md" flex fix>
+            <Div height="md" flex>
               <ResponsiveLine
                 data={data}
                 margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -177,7 +177,7 @@ const SampleContent: React.FC = () => {
               secondaryValue="-100%"
               color="textPrimary"
             />
-            <Div minHeight="md" flex fix>
+            <Div height="md" flex>
               <ResponsiveLine
                 data={data2}
                 margin={{ top: 20, right: 20, bottom: 20, left: 20 }}

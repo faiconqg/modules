@@ -42,7 +42,10 @@ export default class AppStore {
 
   @action
   setConfig(config: TConfig) {
-    this.config = Object.assign({ allowNewUsers: true }, config)
+    this.config = Object.assign(
+      { allowNewUsers: true, displayAppNameInMenuHeader: true },
+      config
+    )
     this.configResolved = true
   }
 

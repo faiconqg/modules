@@ -207,6 +207,7 @@ import AutoRoute from 'modules/libs/AutoRoute'
 import Sample from 'modules/pages/Sample'
 import SampleTab from 'modules/pages/SampleTab'
 import SimplePage from 'modules/components/templates/SimplePage'
+import SampleFeature from 'modules/components/templates/SampleFeature'
 
 const Root: React.FC = () => {
   return (
@@ -234,13 +235,24 @@ const Root: React.FC = () => {
           ]
         },
         {
-          label: 'Test2',
+          label: 'Tabs',
           routes: [
             {
               path: 'sample_tab',
               label: 'Tabs',
               icon: 'calendar_today',
               page: SampleTab
+            }
+          ]
+        },
+        {
+          label: 'Feature',
+          routes: [
+            {
+              path: 'sample_feature',
+              label: 'Feature',
+              icon: 'star',
+              page: SampleFeature
             }
           ]
         }

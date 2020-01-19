@@ -9,10 +9,14 @@ import SwipeableViews from 'react-swipeable-views'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: `calc(100vw - ${window.drawerWidth || 0}px)`,
+    width: '100vw',
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100vw - ${window.drawerWidth || 0}px)`
+    },
     flex: 1
   },
-  main: {
+  tab: {
+    overflowY: 'scroll',
     padding: theme.spacing(6, 4),
     [theme.breakpoints.down('xs')]: {
       padding: theme.spacing(3, 2)
@@ -41,6 +45,7 @@ const TabNavigation: React.FC<IProps> = ({
 }) => {
   const classes = useStyles({})
   const [value, setValue] = useState(0)
+  const [moving, setMoving] = useState()
 
   return (
     <SimplePage
@@ -75,14 +80,18 @@ const TabNavigation: React.FC<IProps> = ({
             ignoreNativeScroll
             resistance
             index={value}
+            onSwitching={m => setMoving(Math.floor(m))}
+            onTransitionEnd={() => setMoving(null)}
             onChangeIndex={(index: number) => setValue(index)}
           >
             {React.Children.map(children, (tabItem, index) => (
               <main
-                className={clsx(classes.main, center && classes.center)}
+                className={clsx(classes.tab, center && classes.center)}
                 key={index}
               >
-                {tabItem}
+                {value === index || moving === index || moving + 1 === index
+                  ? tabItem
+                  : undefined}
               </main>
             ))}
           </SwipeableViews>

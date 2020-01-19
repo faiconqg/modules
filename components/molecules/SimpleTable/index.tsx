@@ -4,7 +4,7 @@ import { Table, TableBody } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: `calc(100vw - ${theme.spacing(2)}px)`,
+    maxWidth: `calc(100vw - ${theme.spacing(4)}px)`,
     [theme.breakpoints.up('sm')]: {
       maxWidth: `calc(100vw - ${theme.spacing(8) +
         (window.drawerWidth || 0)}px)`

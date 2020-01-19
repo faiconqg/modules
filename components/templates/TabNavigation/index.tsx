@@ -9,7 +9,7 @@ import SwipeableViews from 'react-swipeable-views'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100vw',
+    width: `calc(100vw - ${window.drawerWidth || 0}px)`,
     flex: 1
   },
   main: {

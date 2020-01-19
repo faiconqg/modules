@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     padding: theme.spacing(6, 4),
     [theme.breakpoints.down('xs')]: {
-      padding: theme.spacing(3, 1)
+      padding: theme.spacing(3, 2)
     }
   },
   feature: {

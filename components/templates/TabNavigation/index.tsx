@@ -5,16 +5,17 @@ import Tabs from '@material-ui/core/Tabs'
 import { makeStyles } from '@material-ui/core/styles'
 import SimplePage, { ISimplePageProps } from '../SimplePage'
 import clsx from 'clsx'
+import SwipeableViews from 'react-swipeable-views'
 
 const useStyles = makeStyles(theme => ({
   root: {
+    width: '100vw',
     flex: 1
   },
   main: {
-    flex: 1,
     padding: theme.spacing(6, 4),
     [theme.breakpoints.down('xs')]: {
-      padding: theme.spacing(3, 1)
+      padding: theme.spacing(3, 2)
     }
   },
   secondaryBar: {
@@ -70,19 +71,21 @@ const TabNavigation: React.FC<IProps> = ({
               ))}
             </Tabs>
           </AppBar>
-          <main className={classes.main}>
-            {center ? (
-              <div className={classes.center}>
-                {React.Children.map(children, (tabItem, index) =>
-                  value === index ? tabItem : null
-                )}
-              </div>
-            ) : (
-              React.Children.map(children, (tabItem, index) =>
-                value === index ? tabItem : null
-              )
-            )}
-          </main>
+          <SwipeableViews
+            ignoreNativeScroll
+            resistance
+            index={value}
+            onChangeIndex={(index: number) => setValue(index)}
+          >
+            {React.Children.map(children, (tabItem, index) => (
+              <main
+                className={clsx(classes.main, center && classes.center)}
+                key={index}
+              >
+                {tabItem}
+              </main>
+            ))}
+          </SwipeableViews>
         </div>
       }
     ></SimplePage>

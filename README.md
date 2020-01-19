@@ -29,7 +29,7 @@ git submodule add https://github.com/faiconqg/react-modules.git src/modules
 ## 4. Install the required dependencies and dev dependencies:
 
 ```bash
-npm i @material-ui/core @material-ui/icons @nivo/line @ag-grid-community/all-modules @ag-grid-community/react lodash @types/lodash firebase mobx mobx-react-lite mobx-react-form moment prop-types react-dom-factories react-router-dom @types/react-router-dom validatorjs
+npm i @material-ui/core @material-ui/icons @nivo/line @ag-grid-community/all-modules @ag-grid-community/react lodash @types/lodash firebase mobx mobx-react-lite mobx-react-form moment prop-types react-dom-factories react-router-dom @types/react-router-dom validatorjs @types/react-swipeable-views react-swipeable-views
 npm i -D eslint-plugin-prettier grunt grunt-bump prettier
 ```
 

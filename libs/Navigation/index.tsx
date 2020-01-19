@@ -12,7 +12,12 @@ import { makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme => ({
   link: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    outline: 0,
+    WebkitTapHighlightColor: 'transparent'
+    // '&:hover,&.selected,&.active': {
+    //   outline: 0
+    // }
   }
 }))
 

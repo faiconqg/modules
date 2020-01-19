@@ -78,8 +78,10 @@ const TabNavigation: React.FC<IProps> = ({
           </AppBar>
           <SwipeableViews
             ignoreNativeScroll
+            animateHeight
             resistance
             index={value}
+            style={{ height: '100%' }}
             onSwitching={m => setMoving(Math.floor(m))}
             onTransitionEnd={() => setMoving(null)}
             onChangeIndex={(index: number) => setValue(index)}

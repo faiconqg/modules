@@ -82,7 +82,11 @@ const TabNavigation: React.FC<IProps> = ({
             resistance
             index={value}
             style={{ height: '100%' }}
-            onSwitching={m => setMoving(Math.floor(m))}
+            onSwitching={m => {
+              if (!moving) {
+                setMoving(true)
+              }
+            }}
             onTransitionEnd={() => setMoving(null)}
             onChangeIndex={(index: number) => setValue(index)}
           >
@@ -91,9 +95,7 @@ const TabNavigation: React.FC<IProps> = ({
                 className={clsx(classes.tab, center && classes.center)}
                 key={index}
               >
-                {value === index || moving === index || moving + 1 === index
-                  ? tabItem
-                  : undefined}
+                {value === index || moving ? tabItem : undefined}
               </main>
             ))}
           </SwipeableViews>

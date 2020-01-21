@@ -18,9 +18,11 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.text.secondary
   },
   header: {
-    paddingBottom: theme.spacing(1),
     alignItems: 'center',
     display: 'flex'
+  },
+  headerWithChildren: {
+    paddingBottom: theme.spacing(1)
   },
   title: {
     fontSize: 13,
@@ -100,7 +102,12 @@ const PanelItem: React.FC<IPanelItem> = ({
           </Button>
         )}
         {left || rightTitle || icon || !!title || !!right ? (
-          <div className={classes.header}>
+          <div
+            className={clsx(
+              classes.header,
+              children && classes.headerWithChildren
+            )}
+          >
             {left && <div className={classes.left}>{left}</div>}
             {icon}
             {title && (

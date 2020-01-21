@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Button, CircularProgress, ButtonProps } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { observer } from 'mobx-react-lite'
@@ -21,7 +21,7 @@ interface IProps extends ButtonProps {
   busy?: boolean
 }
 
-const BusyButton: FC<IProps> = ({ busy, className, ...props }) => {
+const BusyButton: React.FC<IProps> = ({ busy, className, ...props }) => {
   const classes = useStyles()
 
   return (

@@ -15,6 +15,7 @@ import Div from 'modules/components/molecules/Div'
 import { IButtons } from '../SimplePage'
 import { headerBackground } from '../MainTemplate'
 import { action as mobxAction } from 'mobx'
+import Busy from 'modules/components/atoms/Busy'
 
 const lightColor = 'rgba(255, 255, 255, 0.7)'
 
@@ -43,12 +44,13 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: theme.palette.common.white
   },
   center: {
-    boxSizing: 'content-box',
     padding: theme.spacing(4),
     [theme.breakpoints.down('xs')]: {
       padding: theme.spacing(3, 2)
     },
-    maxWidth: 936,
+    // boxSizing: 'content-box',
+    // maxWidth: 936,
+    maxWidth: 968,
     margin: 'auto'
   },
   featureContainer: {
@@ -82,6 +84,13 @@ const useStyles = makeStyles(theme => ({
     },
     width: 452,
     height: 452
+  },
+  busyContainer: {
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }))
 
@@ -95,6 +104,7 @@ export interface IFeaturePage {
   action: () => void
   buttonLabel: string
   center?: boolean
+  busy?: boolean
 }
 
 const FeaturePage: React.FC<IFeaturePage> = ({
@@ -105,6 +115,7 @@ const FeaturePage: React.FC<IFeaturePage> = ({
   description,
   image,
   buttonLabel,
+  busy,
   action,
   color
 }) => {
@@ -134,6 +145,10 @@ const FeaturePage: React.FC<IFeaturePage> = ({
     }),
     [backgroundColor, mainHeader]
   )
+
+  if (busy) {
+    return <Busy size="big" />
+  }
 
   return (
     <>

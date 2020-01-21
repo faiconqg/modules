@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 import clsx from 'clsx'
@@ -72,7 +72,7 @@ interface IInfoValue {
     | 'textSecondary'
 }
 
-const InfoValue: FC<IInfoValue> = ({
+const InfoValue: React.FC<IInfoValue> = ({
   label,
   strongLabel,
   noPadding = false,

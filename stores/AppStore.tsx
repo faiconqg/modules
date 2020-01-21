@@ -76,5 +76,5 @@ export default class AppStore {
   }
 
   @observable
-  ping: Model<{}> = new Model('ping', 'GET')
+  ping: Model<{}> = new Model('ping')
 }

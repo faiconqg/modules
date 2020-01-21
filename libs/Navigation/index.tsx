@@ -21,13 +21,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-interface iRoute {
+interface IRoute {
   path: string
   component: React.FC<any>
 }
 
 interface INavigation {
-  routes: iRoute[]
+  routes: IRoute[]
 }
 
 const Navigation: React.FC<INavigation> = ({ routes }) => {
@@ -67,11 +67,28 @@ export const SimpleNavigation: React.FC<ISimpleNavigation> = ({
   )
 }
 
-export const Lk: React.FC<LinkProps> = ({ to, ...props }) => {
+interface ILk extends LinkProps {
+  params?: any
+}
+
+export const Lk: React.FC<ILk> = ({ to, params, ...props }) => {
   const match = useRouteMatch()
   const classes = useStyles()
 
-  return <Link to={match.path + to} {...props} className={classes.link} />
+  let queryString = ''
+  if (params) {
+    const query = new URLSearchParams()
+    Object.keys(params).forEach((key: any) => query.append(key, params[key]))
+    queryString = '?' + query.toString()
+  }
+
+  return (
+    <Link
+      to={match.path + to + queryString}
+      {...props}
+      className={classes.link}
+    />
+  )
 }
 
 export const ScrollToTop: React.FC = () => {
@@ -82,4 +99,12 @@ export const ScrollToTop: React.FC = () => {
   }, [pathname])
 
   return null
+}
+
+export const useQuery = () => {
+  const query = new URLSearchParams(useLocation().search)
+  return Array.from(query.entries()).reduce(
+    (acc: any, entry: any) => Object.assign(acc, { [entry[0]]: entry[1] }),
+    {}
+  )
 }

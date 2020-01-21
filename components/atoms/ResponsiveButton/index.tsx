@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Button, IconButton, Hidden, IconButtonProps } from '@material-ui/core'
 import { observer } from 'mobx-react-lite'
 
@@ -7,7 +7,7 @@ interface IProps extends IconButtonProps {
   icon: any
 }
 
-const ResponsiveButton: FC<IProps> = ({ label, icon, ...props }) => {
+const ResponsiveButton: React.FC<IProps> = ({ label, icon, ...props }) => {
   const Icon = icon
 
   return (

@@ -4,48 +4,60 @@ import _ from 'lodash'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
-export default class Base<T> {
-  constructor(
-    endpoint: string,
-    method: Method,
-    relation: any[] = [],
-    data?: T
-  ) {
+export default class Base<T, PathParams = null> {
+  constructor(endpoint: string, relation: any[] = [], data?: T) {
     this.endpoint = endpoint
-    this.method = method
     this.relation = relation
-    this.data = data
+    // Object.assign(this, data)
+    if (data) {
+      this.data = observable(data)
+      Object.assign(this, this.data)
+    }
   }
 
   @observable
   endpoint: string = ''
 
   @observable
-  method: Method = 'GET'
-
-  @observable
   busy: boolean = false
 
   @observable
-  data?: T | T[]
+  data?: T | T[];
+
+  [prop: string]: any
 
   @observable
   error?: any
 
   relation?: any
 
-  @action
-  tryFetch(body?: object) {
+  getIfNull(params?: PathParams, body?: object) {
     if (!this.data) {
-      return this.fetch(body)
+      this.get(params, body)
     }
   }
 
+  get(params?: PathParams, body?: object) {
+    this.fetch('GET', body, params)
+  }
+
+  post(body?: object, params?: PathParams) {
+    this.fetch('POST', body, params)
+  }
+
   @action
-  fetch(body?: object) {
+  fetch(method: Method, body?: object, params?: PathParams) {
     this.busy = true
-    return fetch(`${appStore.config?.apiUrl || ''}/${this.endpoint}`, {
-      method: this.method,
+    let url = `${appStore.config?.apiUrl || ''}/${this.endpoint}`
+
+    if (params) {
+      Object.keys(params).forEach(key => {
+        url = url.replace(':' + key, (params as any)[key])
+      })
+    }
+
+    return fetch(url, {
+      method,
       body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
@@ -85,8 +97,17 @@ export default class Base<T> {
     this.data = json
   }
 
-  get(path?: string) {
-    // return path ? (this.data ? this.data[path] : null) : this.data
-    return path ? _.get(this.data, path) : this.data
+  @action
+  set(path: string, value: any) {
+    return _.set(this, path, observable(value))
   }
+
+  // get(path?: string) {
+  //   // return path ? (this.data ? this.data[path] : null) : this.data
+  //   return path ? _.get(this.data, path) : this.data
+  // }
+
+  // get id() {
+  //   return this.get('id')
+  // }
 }

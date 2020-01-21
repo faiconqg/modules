@@ -7,7 +7,8 @@ export type TModel = {
   error?: any
 }
 
-export default class Model<T> extends Base<T> implements TModel {
+export default class Model<T, PathParams = null> extends Base<T, PathParams>
+  implements TModel {
   @observable
   data?: T
 
@@ -18,6 +19,7 @@ export default class Model<T> extends Base<T> implements TModel {
         'The API returned an array, an object is expected to Model'
       )
     }
-    this.data = json
+    this.data = observable(json)
+    Object.assign(this, this.data)
   }
 }

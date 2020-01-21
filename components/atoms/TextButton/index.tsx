@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Button, ButtonProps, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
 
@@ -35,7 +35,7 @@ interface IProps extends ButtonProps {
   invert?: boolean
 }
 
-const TextButton: FC<IProps> = ({
+const TextButton: React.FC<IProps> = ({
   className,
   invert,
   disableRipple = true,

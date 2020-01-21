@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTheme } from '@material-ui/core/styles'
 import { GridList, GridListProps, useMediaQuery } from '@material-ui/core'
+import Busy from 'modules/components/atoms/Busy'
 
 interface ISimpleGridList extends GridListProps {
   colsXs?: number
@@ -8,6 +9,7 @@ interface ISimpleGridList extends GridListProps {
   colsMd?: number
   colsLg?: number
   colsXl?: number
+  busy?: boolean
 }
 
 const SimpleGridList: React.FC<ISimpleGridList> = ({
@@ -18,6 +20,8 @@ const SimpleGridList: React.FC<ISimpleGridList> = ({
   colsLg,
   colsXl,
   cellHeight = 'auto',
+  spacing = 16,
+  busy,
   ...props
 }) => {
   const theme = useTheme()
@@ -38,9 +42,13 @@ const SimpleGridList: React.FC<ISimpleGridList> = ({
     cols = colsXl || cols || 3
   }
 
+  if (busy) {
+    return <Busy />
+  }
+
   return (
     <GridList
-      spacing={0}
+      spacing={spacing}
       style={{ margin: -8 }}
       cellHeight={cellHeight}
       cols={cols}

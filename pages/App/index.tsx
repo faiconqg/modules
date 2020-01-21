@@ -140,13 +140,14 @@ const OnlyLoggedOutRoute: React.FC<IOnlyLoggedOutRoute> = ({
 }) => (
   <Route
     {...props}
-    render={() =>
-      logged ? (
-        <Redirect to={(props.location?.state as any)?.from?.pathname || '/'} />
+    render={() => {
+      const from = (props.location?.state as any).from
+      return logged ? (
+        <Redirect to={from?.pathname + (from?.search || '') || '/'} />
       ) : (
         children
       )
-    }
+    }}
   />
 )
 

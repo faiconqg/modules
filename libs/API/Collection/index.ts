@@ -6,13 +6,20 @@ export const hasMany = (enpoint: string, relations?: any) => {
   return [
     enpoint,
     (prefix: string, data: any) =>
-      new Collection(`${prefix}/${data.id}/${enpoint}`, 'GET', relations)
+      new Collection(`${prefix}/${data.id}/${enpoint}`, relations)
   ]
 }
 
-export default class Collection<T> extends Base<T> {
+export default class Collection<T, PathParams = null> extends Base<
+  T,
+  PathParams
+> {
   @observable
   data?: T[]
+
+  map(mapFunc: any) {
+    return this.data?.map(mapFunc)
+  }
 
   @action
   resolveResult(json: any) {
@@ -26,7 +33,7 @@ export default class Collection<T> extends Base<T> {
         item[r[0]] = r[1](this.endpoint, item)
       })
 
-      return new Model<T>(this.endpoint, this.method, this.relation, item)
+      return new Model<T>(this.endpoint, this.relation, item)
     })
   }
 }

@@ -194,7 +194,7 @@ const DataGrid: React.FC<IDataGrid> = ({
       if (params.data instanceof Model) {
         onItemClick(params.data)
       } else {
-        onItemClick(new Model('', 'GET', params.data))
+        onItemClick(new Model('', params.data))
       }
     }
   }

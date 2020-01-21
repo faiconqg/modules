@@ -11,24 +11,35 @@ import { Portal } from '@material-ui/core'
 import clsx from 'clsx'
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import { useHistory } from 'react-router-dom'
+import Busy from 'modules/components/atoms/Busy'
 
 const lightColor = 'rgba(255, 255, 255, 0.7)'
 
 const useStyles = makeStyles(theme => ({
   main: {
-    flex: 1,
+    flex: 1
+  },
+  padding: {
     padding: theme.spacing(6, 4),
     [theme.breakpoints.down('xs')]: {
       padding: theme.spacing(3, 2)
     }
   },
-  feature: {
-    marginTop: -360
-  },
-  background: {
-    height: 360,
+  featureBackground: {
     width: '100%',
     backgroundColor: theme.palette.primary.main
+  },
+  regular: {
+    marginTop: -360
+  },
+  small: {
+    marginTop: -160
+  },
+  regularBackground: {
+    height: 360
+  },
+  smallBackground: {
+    height: 160
   },
   secondaryBar: {
     zIndex: 0,
@@ -38,8 +49,10 @@ const useStyles = makeStyles(theme => ({
     borderColor: lightColor
   },
   center: {
-    maxWidth: 936,
-    boxSizing: 'content-box',
+    height: '100%',
+    // maxWidth: 936,
+    // boxSizing: 'content-box',
+    maxWidth: 1000,
     margin: 'auto'
   }
 }))
@@ -51,19 +64,25 @@ export interface IButtons {
 }
 
 export interface ISimplePageProps {
-  overrideMain?: React.ReactNode
+  subHeader?: React.ReactNode
   buttons?: IButtons[]
-  feature?: boolean
+  feature?: 'regular' | 'small'
+  disablePadding?: boolean
   header: string
+  className?: string
   center?: boolean
+  busy?: boolean
 }
 
 const SimplePage: React.FC<ISimplePageProps> = ({
   header,
-  children,
+  children: c,
   buttons,
   feature,
-  overrideMain,
+  disablePadding,
+  subHeader,
+  busy,
+  className,
   center
 }) => {
   const classes = useStyles({})
@@ -79,6 +98,8 @@ const SimplePage: React.FC<ISimplePageProps> = ({
   useEffect(() => {
     setMainHeader(document.getElementById('main-header'))
   }, [mainHeader])
+
+  const children = busy ? <Busy size="big" /> : c
 
   return (
     <React.Fragment>
@@ -132,14 +153,38 @@ const SimplePage: React.FC<ISimplePageProps> = ({
           </Grid>
         </Toolbar>
       </AppBar>
-      {feature && <div className={classes.background} />}
-      {overrideMain ? (
-        overrideMain
-      ) : (
-        <main className={clsx(classes.main, feature && classes.feature)}>
-          {center ? <div className={classes.center}>{children}</div> : children}
-        </main>
+      {subHeader}
+      {!!feature && (
+        <div
+          className={clsx(
+            classes.featureBackground,
+            classes[
+              (feature + 'Background') as
+                | 'regularBackground'
+                | 'smallBackground'
+            ]
+          )}
+        />
       )}
+
+      <main
+        className={clsx(
+          className,
+          classes.main,
+          !disablePadding && !center ? classes.padding : undefined,
+          !!feature && classes[feature]
+        )}
+      >
+        {center ? (
+          <div
+            className={clsx(classes.center, !disablePadding && classes.padding)}
+          >
+            {children}
+          </div>
+        ) : (
+          children
+        )}
+      </main>
     </React.Fragment>
   )
 }

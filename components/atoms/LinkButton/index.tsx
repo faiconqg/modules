@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { Button, ButtonProps } from '@material-ui/core'
 import { Lk } from 'modules/libs/Navigation'
 import * as H from 'history'
@@ -6,6 +6,7 @@ import * as H from 'history'
 interface ILinkButton extends ButtonProps {
   replace?: boolean
   busy?: boolean
+  params?: object
   to:
     | H.LocationDescriptor<H.LocationState>
     | ((
@@ -13,10 +14,17 @@ interface ILinkButton extends ButtonProps {
       ) => H.LocationDescriptor<H.LocationState>)
 }
 
-const LinkButton: FC<ILinkButton> = ({ to, replace, disabled, ...props }) => {
+const LinkButton: React.FC<ILinkButton> = ({
+  to,
+  replace,
+  params,
+  disabled,
+  ...props
+}) => {
   return (
     <Lk
       to={to}
+      params={params}
       replace={replace}
       style={{ pointerEvents: disabled ? 'none' : undefined }}
     >

@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React from 'react'
 import { makeStyles, darken } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 import Div from '../Div'
@@ -29,7 +29,7 @@ interface ISection {
   divider?: boolean
 }
 
-const Section: FC<ISection> = ({ title, right, divider, children }) => {
+const Section: React.FC<ISection> = ({ title, right, divider, children }) => {
   const classes = useStyles()
 
   return (

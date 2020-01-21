@@ -3,13 +3,21 @@ import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 
 const useStyles = makeStyles(theme => ({
-  root: {}
+  root: { flexShrink: 0 },
+  round: {
+    borderRadius: 8
+  },
+  cover: {
+    objectFit: 'cover'
+  }
 }))
 
 interface IImage extends React.HTMLProps<HTMLImageElement> {
   size?: any
   width?: any
   height?: any
+  round?: boolean
+  cover?: boolean
 }
 
 const Image: React.FC<IImage> = ({
@@ -19,6 +27,8 @@ const Image: React.FC<IImage> = ({
   height,
   style,
   crossOrigin,
+  round,
+  cover,
   alt,
   ...props
 }) => {
@@ -34,7 +44,12 @@ const Image: React.FC<IImage> = ({
         style
       )}
       alt={alt || ''}
-      className={clsx(classes.root, className)}
+      className={clsx(
+        classes.root,
+        round && classes.round,
+        cover && classes.cover,
+        className
+      )}
     />
   )
 }

@@ -4,7 +4,7 @@ import SampleContent from './SampleContent'
 
 const Sample: React.FC = () => {
   return (
-    <SimplePage header="Overview" center feature>
+    <SimplePage header="Overview" center feature="regular">
       <SampleContent />
     </SimplePage>
   )

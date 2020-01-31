@@ -252,9 +252,7 @@ const DataGrid: React.FC<IDataGrid> = ({
     if (params.column.colDef.label) {
       return params.column.colDef.label
     } else if (params.data) {
-      return params.data.get
-        ? params.data.get(params.column.colDef.field)
-        : _.get(params.data, params.column.colDef.field)
+      return _.get(params.data, params.column.colDef.field)
     } else {
       return ''
     }

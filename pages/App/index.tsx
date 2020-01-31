@@ -22,6 +22,7 @@ import {
 } from '@material-ui/core'
 import Register from '../Register'
 import InfoIcon from '@material-ui/icons/Info'
+import 'modules/utils/misc/delcarations.d.ts'
 
 interface IProps {
   config: TConfig

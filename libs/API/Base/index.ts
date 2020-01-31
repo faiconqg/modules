@@ -33,16 +33,18 @@ export default class Base<T, PathParams = null> {
 
   getIfNull(params?: PathParams, body?: object) {
     if (!this.data) {
-      this.get(params, body)
+      return this.get(params, body)
+    } else {
+      return new Promise((resolve, error) => resolve(this.data))
     }
   }
 
   get(params?: PathParams, body?: object) {
-    this.fetch('GET', body, params)
+    return this.fetch('GET', body, params)
   }
 
   post(body?: object, params?: PathParams) {
-    this.fetch('POST', body, params)
+    return this.fetch('POST', body, params)
   }
 
   @action
@@ -100,6 +102,13 @@ export default class Base<T, PathParams = null> {
   @action
   set(path: string, value: any) {
     return _.set(this, path, observable(value))
+  }
+
+  @action
+  reset() {
+    Object.keys(this.data || {}).forEach(key => {
+      delete this[key]
+    })
   }
 
   // get(path?: string) {

@@ -14,12 +14,15 @@ export type TConfig = {
   allowNewUsers?: boolean
   displayAppNameInMenuHeader?: boolean
   loginBottomText?: string
+  useSecondaryColorInMenu?: boolean
 }
 
 export default class AppStore {
   constructor() {
     mobx.configure({ enforceActions: 'observed' })
   }
+
+  cachedUrls: any = {}
 
   @observable
   initialized: boolean = false
@@ -29,6 +32,9 @@ export default class AppStore {
 
   @observable
   config: TConfig | undefined
+
+  @observable
+  debugJSON: any
 
   firebaseConfig?: object
 
@@ -50,6 +56,11 @@ export default class AppStore {
   }
 
   @action
+  setDebug(json: any) {
+    this.debugJSON = json
+  }
+
+  @action
   setFirebaseConfig(firebaseConfig: any) {
     if (firebaseConfig) {
       this.firebaseConfig = firebaseConfig
@@ -66,6 +77,23 @@ export default class AppStore {
     } else {
       this.setInitialized()
     }
+  }
+
+  getDownloadURL(path: string) {
+    return new Promise(resolve => {
+      if (this.cachedUrls[path]) {
+        resolve(this.cachedUrls[path])
+      } else {
+        firebase
+          .storage()
+          .ref(path)
+          .getDownloadURL()
+          .then(result => {
+            this.cachedUrls[path] = result
+            resolve(result)
+          })
+      }
+    })
   }
 
   @action

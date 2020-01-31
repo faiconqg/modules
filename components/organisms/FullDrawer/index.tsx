@@ -95,6 +95,9 @@ const FullDrawer: React.FC<IFullDrawer> = ({
       window.history.pushState({ fullDrawer: true }, '')
       withHash = true
     }
+    return () => {
+      withHash = false
+    }
   }, [open])
 
   return (

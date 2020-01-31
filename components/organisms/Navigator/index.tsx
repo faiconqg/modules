@@ -45,6 +45,9 @@ const useStyles = makeStyles(theme => ({
   itemActiveItem: {
     color: theme.palette.primary.light
   },
+  itemActiveItemSecondary: {
+    color: theme.palette.secondary.light
+  },
   itemPrimary: {
     fontSize: 'inherit'
   },
@@ -101,9 +104,13 @@ const Navigator: React.FC<IProps> = ({
   ...props
 }) => {
   const classes = useStyles({})
-
   return (
-    <SwipeableDrawer variant="permanent" {...props}>
+    <SwipeableDrawer
+      variant="permanent"
+      {...props}
+      disableDiscovery
+      disableSwipeToOpen
+    >
       <List disablePadding>
         <ListItem
           className={clsx(classes.firebase, classes.item, classes.itemCategory)}
@@ -131,7 +138,11 @@ const Navigator: React.FC<IProps> = ({
               to={'/' + path}
               exact={path.length === 0}
               className={classes.link}
-              activeClassName={classes.itemActiveItem}
+              activeClassName={
+                config.useSecondaryColorInMenu
+                  ? classes.itemActiveItemSecondary
+                  : classes.itemActiveItem
+              }
             >
               <ListItem
                 className={clsx(classes.item, classes.itemCategory)}
@@ -173,7 +184,11 @@ const Navigator: React.FC<IProps> = ({
                     key={childLabel}
                     to={'/' + path}
                     className={classes.link}
-                    activeClassName={classes.itemActiveItem}
+                    activeClassName={
+                      config.useSecondaryColorInMenu
+                        ? classes.itemActiveItemSecondary
+                        : classes.itemActiveItem
+                    }
                   >
                     <ListItem
                       button
